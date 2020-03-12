@@ -1,10 +1,18 @@
+let users = {
+  1: {
+    id: '1',
+    username: 'Jamie Shaw'
+  },
+  2: {
+    id: '2',
+    username: 'Mr Anderson'
+  }
+};
+
+const me = users[1];
+
 module.exports = {
   Query: {
-    me: () => {
-      return {
-        me
-      };
-    },
     getUser: (parent, { id }) => {
       return users[id];
     },

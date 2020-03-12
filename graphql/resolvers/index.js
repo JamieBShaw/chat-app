@@ -1,7 +1,9 @@
 const userResolvers = require('./user');
+const messageResolvers = require('./messages');
 
 module.exports = {
   Query: {
-    ...userResolvers.Query
+    ...userResolvers.Query,
+    ...messageResolvers.Query
   }
 };

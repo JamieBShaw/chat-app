@@ -4,6 +4,7 @@ const schema = gql`
   type Message {
     id: ID!
     body: String!
+    user: User!
   }
 
   type User {
