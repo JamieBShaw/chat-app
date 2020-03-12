@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+const Sequelize = require("sequelize").Sequelize;
 import "dotenv/config";
 
 const sequelize = new Sequelize(
@@ -12,7 +12,7 @@ const sequelize = new Sequelize(
 
 const models = {
 	User: sequelize.import("./user"),
-	Messages: sequelize.import("./messages")
+	Message: sequelize.import("./message")
 };
 
 Object.keys(models).forEach(modelName => {

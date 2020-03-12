@@ -1,30 +1,31 @@
-import { gql } from 'apollo-server';
+import { gql } from "apollo-server";
 
 const schema = gql`
-  type Message {
-    id: ID!
-    body: String!
-    user: User!
-  }
+	type Message {
+		id: ID!
+		body: String!
+		user: User!
+	}
 
-  type User {
-    id: String!
-    username: String!
-    messages: [Message!]
-    createdAt: String!
-  }
-  type Query {
-    getMessages: [Message]!
-    getMessage(id: ID!): Message!
+	type User {
+		id: String!
+		username: String!
+		messages: [Message!]
+		createdAt: String!
+	}
+	type Query {
+		getMessages: [Message]!
+		getMessage(id: ID!): Message!
 
-    getUser(id: ID!): User!
-    getUsers: [User!]
-    me: User!
-  }
+		getUser(id: ID!): User!
+		getUsers: [User!]
+		me: User!
+	}
 
-  type Mutation {
-    createMessage(body: String!): Message!
-  }
+	type Mutation {
+		createMessage(body: String!): Message!
+		deleteMessage(id: ID!): Boolean!
+	}
 `;
 
 export default schema;
