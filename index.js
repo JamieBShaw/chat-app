@@ -12,9 +12,25 @@ const app = express();
 
 app.use(cors());
 
+let users = {
+  1: {
+    id: '1',
+    username: 'Jamie Shaw'
+  },
+  2: {
+    id: '2',
+    username: 'Mr Anderson'
+  }
+};
+
+const me = users[1];
+
 const server = new ApolloServer({
   typeDefs: schema,
-  resolvers
+  resolvers,
+  context: {
+    me: users[1]
+  }
 });
 
 server.applyMiddleware({ app, path: '/graphql' });
