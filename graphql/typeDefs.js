@@ -1,6 +1,7 @@
-import { gql } from "apollo-server";
+import { gql } from 'apollo-server';
 
 module.exports = gql`
+
 	type Message {
 		id: ID!
 		body: String!
@@ -14,5 +15,9 @@ module.exports = gql`
 		token: String!
 		refreshToken: String!
 		createdAt: String!
+	}
+
+	type Query {
+		getMessages()
 	}
 `;
