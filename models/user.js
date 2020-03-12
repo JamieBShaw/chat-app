@@ -1,8 +1,5 @@
 const user = (sequelize, DataTypes) => {
 	const User = sequelize.define("user", {
-		id: {
-			type: DataTypes.STRING
-		},
 		username: {
 			type: DataTypes.STRING
 		},
