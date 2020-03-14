@@ -12,7 +12,7 @@ module.exports = {
 	Mutation: {
 		createMessage: async (parent, { body }, { me, models }) => {
 			try {
-				return await models.Messae.create({
+				return await models.Message.create({
 					body,
 					userId: me.id
 				});

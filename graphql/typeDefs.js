@@ -10,8 +10,10 @@ const schema = gql`
 	type User {
 		id: String!
 		username: String!
+		email: String!
 		messages: [Message!]
 		createdAt: String!
+		token: String!
 	}
 	type Query {
 		getMessages: [Message]!
@@ -25,6 +27,15 @@ const schema = gql`
 	type Mutation {
 		createMessage(body: String!): Message!
 		deleteMessage(id: ID!): Boolean!
+
+		register(
+			username: String!
+			email: String!
+			password: String!
+			confirmPassword: String!
+		): User!
+
+		login(login: String!, password: String!): User!
 	}
 `;
 

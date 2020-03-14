@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
+import jwt from "jsonwebtoken";
 
-import { ApolloServer, gql } from "apollo-server-express";
+import { ApolloServer, AuthenticationError } from "apollo-server-express";
 
 import resolvers from "./graphql/resolvers/index";
 import schema from "./graphql/typeDefs";
@@ -12,13 +13,39 @@ const app = express();
 
 app.use(cors());
 
+const getMe = async req => {
+	const token = req.headers["x-token"];
+
+	if (token) {
+		try {
+			return await jwt.verify(token, process.env.SECRET);
+		} catch (err) {
+			throw new AuthenticationError("Your sessin has expired, please login");
+		}
+	}
+};
+
 const server = new ApolloServer({
 	typeDefs: schema,
 	resolvers,
-	context: async () => ({
-		models,
-		me: await models.User.findByLogin("JamieBShaw")
-	})
+	formatError: error => {
+		const mesg = error.message
+			.replace("SequelizeValidationError: ", "")
+			.replace("Validation error: ", "");
+		return {
+			...error,
+			mesg
+		};
+	},
+	context: async ({ req }) => {
+		const me = await getMe(req);
+
+		return {
+			models,
+			me,
+			secret: process.env.SECRET
+		};
+	}
 });
 
 server.applyMiddleware({ app, path: "/graphql" });
