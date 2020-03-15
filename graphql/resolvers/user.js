@@ -1,22 +1,25 @@
 import { AuthenticationError, UserInputError } from "apollo-server";
 
-import validateRegistration from "../../utils/validation";
+import { validateRegistration } from "../../utils/validation";
 import createToken from "../../utils/createToken";
+import { combineResolvers } from "graphql-resolvers";
+import { isAdmin } from "../../utils/authorization";
 
 module.exports = {
 	Query: {
-		me: async (parent, args, { models, me }) => {
+		me: async (_, __, { models, me }) => {
 			if (!me) {
 				return null;
 			}
-
 			return await models.User.findByPk(me.id);
 		},
-		getUser: async (parent, { id }, { models }) => {
-			return await models.User.findByPk(id);
+		getUser: async (_, { id }, { models }) => {
+			const user = await models.User.findByPk(id);
+			return user;
 		},
-		getUsers: async (parent, args, { models }) => {
-			return await models.User.findAll();
+		getUsers: async (_, __, { models }) => {
+			const user = await models.User.findAll();
+			return user;
 		}
 	},
 
@@ -37,10 +40,10 @@ module.exports = {
 				throw new UserInputError("ERRORS: ", { errors });
 			}
 
-			const user = await models.User.findOne({ username });
+			const user = await models.User.findOne({ where: { username } });
 
 			if (user) {
-				throw new AuthenticationError("ERROR: Username already exists", {
+				throw new UserInputError("ERROR: Username already exists", {
 					errors: {
 						username: "This username is taken"
 					}
@@ -55,11 +58,15 @@ module.exports = {
 				password
 			});
 
-			const token = createToken(newUser, "30m");
+			const generatedToken = createToken(newUser, "30m");
 
 			return {
-				newUser,
-				token
+				id: newUser.id,
+				email: newUser.email,
+				username: newUser.username,
+				role: newUser.role,
+				createdAt: new Date().toUTCString(),
+				token: generatedToken
 			};
 		},
 		login: async (_, { login, password }, { models }) => {
@@ -77,13 +84,22 @@ module.exports = {
 				throw new AuthenticationError("Password is incorrect");
 			}
 
-			const token = createToken(user, "30m");
+			const newToken = createToken(user, "30m");
 
 			return {
-				user,
-				token
+				id: user.id,
+				username: user.username,
+				email: user.email,
+				role: user.role,
+				createdAt: user.createdAt,
+				token: newToken
 			};
-		}
+		},
+		deleteUser: combineResolvers(isAdmin, async (_, { id }, { models }) => {
+			return await models.User.destroy({
+				where: { id }
+			});
+		})
 	},
 
 	User: {

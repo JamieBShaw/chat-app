@@ -5,18 +5,20 @@ const schema = gql`
 		id: ID!
 		body: String!
 		user: User!
+		createdAt: String!
 	}
 
 	type User {
 		id: String!
 		username: String!
 		email: String!
-		messages: [Message!]
+		role: String
+		messages: [Message]!
 		createdAt: String!
 		token: String!
 	}
 	type Query {
-		getMessages: [Message]!
+		getMessages(cursor: String, limit: Int): [Message]!
 		getMessage(id: ID!): Message!
 
 		getUser(id: ID!): User!

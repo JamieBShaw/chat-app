@@ -13,12 +13,12 @@ const app = express();
 
 app.use(cors());
 
-const getMe = async req => {
+const getMe = req => {
 	const token = req.headers["x-token"];
 
 	if (token) {
 		try {
-			return await jwt.verify(token, process.env.SECRET);
+			return jwt.verify(token, process.env.SECRET);
 		} catch (err) {
 			throw new AuthenticationError("Your sessin has expired, please login");
 		}
@@ -29,12 +29,12 @@ const server = new ApolloServer({
 	typeDefs: schema,
 	resolvers,
 	formatError: error => {
-		const mesg = error.message
+		const messages = error.message
 			.replace("SequelizeValidationError: ", "")
 			.replace("Validation error: ", "");
 		return {
 			...error,
-			mesg
+			messages
 		};
 	},
 	context: async ({ req }) => {
@@ -58,7 +58,7 @@ sequelize
 	})
 	.then(async () => {
 		if (eraseDatabaseOnSync) {
-			createUsersWithMessages();
+			createUsersWithMessages(new Date());
 		}
 
 		app.listen({ port: 8000 }, () => {
@@ -66,15 +66,17 @@ sequelize
 		});
 	});
 
-const createUsersWithMessages = async () => {
+const createUsersWithMessages = async date => {
 	await models.User.create(
 		{
 			username: "JamieBShaw",
 			email: "jamiebshaw@gmail.com",
 			password: "password",
+			role: "ADMIN",
 			messages: [
 				{
-					body: "This is a test message"
+					body: "This is a test message",
+					createdAt: date.getSeconds(date.getSeconds() + 1)
 				}
 			]
 		},
@@ -90,10 +92,12 @@ const createUsersWithMessages = async () => {
 			password: "password",
 			messages: [
 				{
-					body: "happy birthday to me"
+					body: "happy birthday to me",
+					createdAt: date.getSeconds(date.getSeconds() + 1)
 				},
 				{
-					body: "please work first time"
+					body: "please work first time",
+					createdAt: date.getSeconds(date.getSeconds() + 1)
 				}
 			]
 		},
