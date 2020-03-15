@@ -27,4 +27,4 @@ const validateRegistration = (username, email, password, confirmPassword) => {
 	};
 };
 
-export { validateRegistration, validateLogin };
+export { validateRegistration };

@@ -36,6 +36,8 @@ const schema = gql`
 		): User!
 
 		login(login: String!, password: String!): User!
+
+		deleteUser(id: ID!): Boolean!
 	}
 `;
 
