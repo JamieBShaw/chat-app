@@ -9,6 +9,7 @@ import ChatRooms from './pages/ChatRooms';
 import NavBar from './components/NavBar';
 
 import 'semantic-ui-css/semantic.min.css';
+import './App.css';
 
 function App() {
   return (

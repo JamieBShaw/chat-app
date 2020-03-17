@@ -19,7 +19,7 @@ const NavBar = () => {
         as={Link}
         to={'/'}
       >
-        <Icon name='home' />
+        <Icon name={'home'} />
       </Menu.Item>
       <Menu.Menu position='right'>
         <Menu.Item
