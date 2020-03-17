@@ -1,24 +1,24 @@
-import React from "react";
-import ApolloClient from "apollo-client";
-import { ApolloProvider } from "@apollo/react-hooks";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { createHttpLink } from "apollo-link-http";
+import React from 'react';
+import App from './App';
+import ApolloClient from 'apollo-client';
 
-import App from "./App";
+import { ApolloProvider } from '@apollo/react-hooks';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { createHttpLink } from 'apollo-link-http';
 
 const httpLink = createHttpLink({
-	uri: "http://localhost:5000/graphql"
+  uri: 'http://localhost:5000/graphql'
 });
 
 const cache = new InMemoryCache();
 
 const client = new ApolloClient({
-	link: httpLink,
-	cache: cache
+  link: httpLink,
+  cache: cache
 });
 
 export default (
-	<ApolloProvider client={client}>
-		<App />
-	</ApolloProvider>
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>
 );
