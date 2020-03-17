@@ -1,54 +1,67 @@
-import { gql } from "apollo-server";
+import { gql } from 'apollo-server';
 
 const schema = gql`
-	type Message {
-		id: ID!
-		body: String!
-		user: User!
-		createdAt: String!
-	}
+  type Message {
+    id: ID!
+    body: String!
+    user: User!
+    createdAt: String!
+  }
 
-	type MessageCreated {
-		message: Message!
-	}
+  type MessageCreated {
+    message: Message!
+  }
 
-	type User {
-		id: String!
-		username: String!
-		email: String!
-		role: String
-		messages: [Message]!
-		createdAt: String!
-		token: String!
-	}
-	type Query {
-		getMessages(cursor: String, limit: Int): [Message]!
-		getMessage(id: ID!): Message!
+  type Room {
+    id: ID!
+    name: String
+    users: [User]
+    message: [Message]
+  }
 
-		getUser(id: ID!): User!
-		getUsers: [User!]
-		me: User!
-	}
+  type User {
+    id: String!
+    username: String!
+    email: String!
+    role: String
+    messages: [Message]!
+    createdAt: String!
+    token: String!
+  }
+  type Query {
+    getMessages(cursor: String, limit: Int): [Message]!
+    getMessage(id: ID!): Message!
 
-	type Mutation {
-		createMessage(body: String!): Message!
-		deleteMessage(id: ID!): Boolean!
+    getRooms: [Room]
+    getRoom(name: String!): Room
 
-		register(
-			username: String!
-			email: String!
-			password: String!
-			confirmPassword: String!
-		): User!
+    getUser(id: ID!): User!
+    getUsers: [User!]
+    me: User!
+  }
 
-		login(login: String!, password: String!): User!
+  type Mutation {
+    createMessage(body: String!): Message!
+    deleteMessage(id: ID!): Boolean!
 
-		deleteUser(id: ID!): Boolean!
-	}
+    enterRoom(roomDetails: String!): Room!
+    leaveRoom(roomDetails: String!): Boolean!
 
-	type Subscription {
-		messageCreated: MessageCreated!
-	}
+    register(
+      username: String!
+      email: String!
+      password: String!
+      confirmPassword: String!
+    ): User!
+
+    login(login: String!, password: String!): User!
+
+    deleteUser(id: ID!): Boolean!
+  }
+
+  type Subscription {
+    messageCreated: MessageCreated!
+  }
 `;
 
 export default schema;
