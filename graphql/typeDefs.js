@@ -8,6 +8,10 @@ const schema = gql`
 		createdAt: String!
 	}
 
+	type MessageCreated {
+		message: Message!
+	}
+
 	type User {
 		id: String!
 		username: String!
@@ -40,6 +44,10 @@ const schema = gql`
 		login(login: String!, password: String!): User!
 
 		deleteUser(id: ID!): Boolean!
+	}
+
+	type Subscription {
+		messageCreated: MessageCreated!
 	}
 `;
 

@@ -2,20 +2,25 @@ import { Sequelize } from "sequelize";
 
 import { combineResolvers } from "graphql-resolvers";
 import { isAuth, isMessageOwner } from "../../utils/authorization";
+import pubsub, { EVENTS } from "../subscriptions/index";
 
 module.exports = {
 	Query: {
 		getMessages: async (_, { cursor, limit = 100 }, { models }) => {
-			return await models.Message.findAll({
-				order: [["createdAt", "DESC"]],
-				limit,
-				where: cursor
-					? {
+			const queryOptions = cursor
+				? {
+						where: {
 							createdAt: {
 								[Sequelize.Op.lt]: cursor
 							}
-					  }
-					: null
+						}
+				  }
+				: null;
+
+			return await models.Message.findAll({
+				order: [["createdAt", "DESC"]],
+				limit,
+				...queryOptions
 			});
 		},
 		getMessage: async (_, { id }, { models }) => {
@@ -26,15 +31,17 @@ module.exports = {
 		createMessage: combineResolvers(
 			isAuth,
 			async (_, { body }, { me, models }) => {
-				try {
-					return await models.Message.create({
-						body,
-						userId: me.id,
-						createdAt: new Date().toUTCString()
-					});
-				} catch (err) {
-					throw new Error(err);
-				}
+				const message = await models.Message.create({
+					body,
+					userId: me.id,
+					createdAt: new Date().toUTCString()
+				});
+
+				pubsub.publish(EVENTS.MESSAGE.CREATED, {
+					messageCreated: { message }
+				});
+
+				return message;
 			}
 		),
 		deleteMessage: combineResolvers(
@@ -49,9 +56,16 @@ module.exports = {
 			}
 		)
 	},
+	Subscription: {
+		messageCreated: {
+			subscribe: () => pubsub.asyncIterator(EVENTS.MESSAGE.CREATED)
+		}
+	},
 	Message: {
-		user: async (message, args, { models }) => {
-			return await models.User.findByPk(message.userId);
+		user: async (message, __, { loaders }) => {
+			const users = await loaders.user.load(message.userId);
+			console.log("USERS ARE HERE:   ", users);
+			return users;
 		}
 	}
 };

@@ -1,17 +1,16 @@
 import express from "express";
-import cors from "cors";
+
 import jwt from "jsonwebtoken";
+import http from "http";
+import DataLoader from "dataloader";
 
 import { ApolloServer, AuthenticationError } from "apollo-server-express";
 
 import resolvers from "./graphql/resolvers/index";
 import schema from "./graphql/typeDefs";
-//import models from "./models/data";
 import models, { sequelize } from "./models/index";
 
 const app = express();
-
-app.use(cors());
 
 const getMe = req => {
 	const token = req.headers["x-token"];
@@ -23,6 +22,18 @@ const getMe = req => {
 			throw new AuthenticationError("Your sessin has expired, please login");
 		}
 	}
+};
+
+const batchUsers = async (keys, models) => {
+	const users = await models.User.findAll({
+		where: {
+			id: {
+				$in: keys
+			}
+		}
+	});
+
+	return keys.map(key => users.find(user => user.id === key));
 };
 
 const server = new ApolloServer({
@@ -37,18 +48,32 @@ const server = new ApolloServer({
 			messages
 		};
 	},
-	context: async ({ req }) => {
-		const me = await getMe(req);
+	context: async ({ req, connection }) => {
+		if (connection) {
+			return {
+				models
+			};
+		}
 
-		return {
-			models,
-			me,
-			secret: process.env.SECRET
-		};
+		if (req) {
+			const me = await getMe(req);
+
+			return {
+				models,
+				me,
+				secret: process.env.SECRET,
+				loaders: {
+					user: new DataLoader(keys => batchUsers(keys, models))
+				}
+			};
+		}
 	}
 });
 
 server.applyMiddleware({ app, path: "/graphql" });
+
+const httpServer = http.createServer(app);
+server.installSubscriptionHandlers(httpServer);
 
 const eraseDatabaseOnSync = true;
 
@@ -61,8 +86,8 @@ sequelize
 			createUsersWithMessages(new Date());
 		}
 
-		app.listen({ port: 8000 }, () => {
-			console.log("SERVER RUNNING ON PORT:" + 8000 + "/graphql");
+		httpServer.listen({ port: 5000 }, () => {
+			console.log("SERVER RUNNING ON PORT:" + 5000 + "/graphql");
 		});
 	});
 
