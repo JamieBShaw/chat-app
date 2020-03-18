@@ -1,13 +1,12 @@
-import React from 'react';
+import React from "react";
+import Jumbotron from "../components/Jumbotron";
 
 const Home = () => {
-  return (
-    <div className='container'>
-      <div className='ui header center'>
-        <h2> Home </h2>
-      </div>
-    </div>
-  );
+	return (
+		<>
+			<Jumbotron />
+		</>
+	);
 };
 
 export default Home;

@@ -1,11 +1,25 @@
 .page-title {
-  display: block !important;
-  text-align: center;
-  font-size: 2rem;
-  margin-top: 10px;
+	display: block !important;
+	text-align: center;
+	font-size: 2rem;
+	margin-top: 10px;
 }
 
 .form-container {
-  width: 400px;
-  margin: auto;
+	width: 400px;
+	margin: auto;
+}
+
+.jumbo {
+	background: no-repeat fixed bottom;
+	background-image: url(https://images.pexels.com/photos/3852023/pexels-photo-3852023.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
+	background-size: cover;
+	color: black;
+	height: 450px;
+	position: relative;
+	z-index: -2;
+}
+
+body {
+	font-family: "Righteous", cursive;
 }
