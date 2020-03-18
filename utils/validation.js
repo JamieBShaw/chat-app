@@ -27,4 +27,21 @@ const validateRegistration = (username, email, password, confirmPassword) => {
 	};
 };
 
-export { validateRegistration };
+const validateLogin = (username, password) => {
+	let errors = {};
+
+	if (!username || username.trim() === "") {
+		errors.username = "Username not provided";
+	}
+
+	if (!password || password.trim() === "") {
+		errors.password = "Password not provided";
+	}
+
+	return {
+		errors,
+		valid: Object.keys(errors) < 1
+	};
+};
+
+export { validateRegistration, validateLogin };
