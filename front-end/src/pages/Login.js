@@ -1,82 +1,83 @@
-import React, { useState, useContext } from "react";
-import { Form, Button } from "semantic-ui-react";
+import React, { useState, useContext } from 'react';
+import { Form, Button } from 'semantic-ui-react';
 
-import { useMutation } from "@apollo/react-hooks";
-import gql from "graphql-tag";
+import { useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 
-import { AuthContext } from "../context/authorization";
+import { AuthContext } from '../context/globalContext/auth';
 
-import { useForm } from "../utils/useForm";
+import { useForm } from '../utils/useForm';
 
 const Login = props => {
-	const context = useContext(AuthContext);
+  const context = useContext(AuthContext);
 
-	const [loginUser, { loading }] = useMutation(LOGIN_USER, {
-		update(_, { data: { login: userData } }) {
-			context.login(userData);
+  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
+    update(_, { data: { login: userData } }) {
+      context.login(userData);
 
-			props.history.push("/");
-		},
-		onError(err) {
-			console.log(err);
-		}
-	});
+      props.history.push('/');
+    },
+    onError(err) {
+      console.log(err);
+      setErrors(err);
+    }
+  });
 
-	const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({});
 
-	const initialState = {
-		username: "",
-		password: ""
-	};
+  const initialState = {
+    username: '',
+    password: ''
+  };
 
-	const { onChange, onSubmit, values } = useForm(loginCallback, initialState);
+  const { onChange, onSubmit, values } = useForm(loginCallback, initialState);
 
-	function loginCallback() {
-		loginUser({
-			variables: {
-				login: values.username,
-				password: values.password
-			}
-		});
-	}
+  function loginCallback() {
+    loginUser({
+      variables: {
+        login: values.username,
+        password: values.password
+      }
+    });
+  }
 
-	return (
-		<div className="form-container">
-			<Form onSubmit={onSubmit} noValidate loading={loading}>
-				<h3 className="page-title">Login</h3>
-				<Form.Input
-					name="username"
-					values={values.username}
-					onChange={onChange}
-					error={errors.login}
-					label="Username or Email"
-				/>
-				<Form.Input
-					name="password"
-					values={values.password}
-					onChange={onChange}
-					error={errors.password}
-					label="Password"
-					type="password"
-				/>
-				<Button positive type="submit">
-					Login
-				</Button>
-			</Form>
-		</div>
-	);
+  return (
+    <div className='form-container'>
+      <Form onSubmit={onSubmit} noValidate loading={loading}>
+        <h3 className='page-title'>Login</h3>
+        <Form.Input
+          name='username'
+          values={values.username}
+          onChange={onChange}
+          error={errors.login}
+          label='Username or Email'
+        />
+        <Form.Input
+          name='password'
+          values={values.password}
+          onChange={onChange}
+          error={errors.password}
+          label='Password'
+          type='password'
+        />
+        <Button positive type='submit'>
+          Login
+        </Button>
+      </Form>
+    </div>
+  );
 };
 
 const LOGIN_USER = gql`
-	mutation login($login: String!, $password: String!) {
-		login(login: $login, password: $password) {
-			id
-			email
-			username
-			createdAt
-			token
-		}
-	}
+  mutation login($login: String!, $password: String!) {
+    login(login: $login, password: $password) {
+      id
+      email
+      username
+      createdAt
+      token
+    }
+  }
 `;
 
 export default Login;
