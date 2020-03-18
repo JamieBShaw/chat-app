@@ -18,8 +18,11 @@ const Login = props => {
 			props.history.push("/");
 		},
 		onError(err) {
-			console.log(err.graphQLErrors);
-			setErrors(err.graphQLErrors);
+			const { username, password } = err.graphQLErrors[0].extensions.exception;
+			setErrors({
+				username: username,
+				password: password
+			});
 		}
 	});
 
@@ -49,7 +52,7 @@ const Login = props => {
 					name="username"
 					values={values.username}
 					onChange={onChange}
-					error={errors.login}
+					error={errors.username}
 					label="Username or Email"
 				/>
 				<Form.Input
