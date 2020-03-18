@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from "react";
-import * as actionTypes from "./actionTypes";
+import * as actionTypes from "../actionTypes";
 import jwtDecoder from "jwt-decode";
 
 const initialState = {

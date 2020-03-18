@@ -4,7 +4,7 @@ import { Form, Button } from "semantic-ui-react";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
-import { AuthContext } from "../context/authorization";
+import { AuthContext } from "../context/globalContext/auth";
 
 import { useForm } from "../utils/useForm";
 
