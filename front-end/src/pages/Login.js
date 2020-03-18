@@ -18,7 +18,8 @@ const Login = props => {
 			props.history.push("/");
 		},
 		onError(err) {
-			console.log(err);
+			console.log(err.graphQLErrors);
+			setErrors(err.graphQLErrors);
 		}
 	});
 
