@@ -17,7 +17,7 @@ function App() {
 	return (
 		<AuthProvider>
 			<Router>
-				<Container>
+				<Container fluid>
 					<NavBar />
 					<Route exact path="/" component={Home} />
 					<Route exact path="/rooms" component={ChatRooms} />

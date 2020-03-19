@@ -5,6 +5,14 @@
 	margin-top: 10px;
 }
 
+.page-title-home {
+	display: block !important;
+	text-align: left;
+	font-size: 2rem;
+	margin-top: 10px;
+	font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
 .form-container {
 	width: 400px;
 	margin: auto;
@@ -12,14 +20,11 @@
 
 .jumbo {
 	background: no-repeat fixed bottom;
-	background-image: url(https://images.pexels.com/photos/3852023/pexels-photo-3852023.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
+	background-image: url(https://images.pexels.com/photos/3764488/pexels-photo-3764488.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
 	background-size: cover;
 	color: black;
 	height: 450px;
+
 	position: relative;
 	z-index: -2;
-}
-
-body {
-	font-family: "Righteous", cursive;
 }
