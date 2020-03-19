@@ -98,6 +98,7 @@ const createUsersWithMessages = async date => {
 			email: "jamiebshaw@gmail.com",
 			password: "password",
 			role: "ADMIN",
+			room: "1",
 			messages: [
 				{
 					body: "This is a test message",
@@ -115,6 +116,7 @@ const createUsersWithMessages = async date => {
 			username: "davidAnderson",
 			email: "davidanderson@gmail.com",
 			password: "password",
+			room: "2",
 			messages: [
 				{
 					body: "happy birthday to me",

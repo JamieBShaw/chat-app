@@ -64,6 +64,7 @@ module.exports = {
 				id: newUser.id,
 				email: newUser.email,
 				username: newUser.username,
+				rooms: newUser.rooms,
 				role: newUser.role,
 				createdAt: new Date().toUTCString(),
 				token: generatedToken

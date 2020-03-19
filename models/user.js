@@ -29,11 +29,15 @@ const user = (sequelize, DataTypes) => {
 		},
 		role: {
 			type: DataTypes.STRING
+		},
+		room: {
+			type: DataTypes.STRING
 		}
 	});
 
 	User.associate = models => {
 		User.hasMany(models.Message, { onDelete: "CASCADE" });
+		User.hasMany(models.Room, { onDelete: "CASCADE" });
 	};
 
 	User.findByLoginDetails = async login => {

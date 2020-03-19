@@ -30,9 +30,10 @@ module.exports = {
 	Mutation: {
 		createMessage: combineResolvers(
 			isAuth,
-			async (_, { body }, { me, models }) => {
+			async (_, { body, roomId }, { me, models }) => {
 				const message = await models.Message.create({
 					body,
+					roomId,
 					userId: me.id,
 					createdAt: new Date().toUTCString()
 				});

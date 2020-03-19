@@ -8,6 +8,9 @@ const message = (sequelize, DataTypes) => {
 					msg: "A message must have text."
 				}
 			}
+		},
+		roomId: {
+			type: DataTypes.STRING
 		}
 	});
 

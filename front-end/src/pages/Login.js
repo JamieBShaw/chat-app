@@ -7,6 +7,7 @@ import gql from "graphql-tag";
 import { AuthContext } from "../context/globalContext/auth";
 
 import { useForm } from "../utils/useForm";
+import { Link } from "react-router-dom";
 
 const Login = props => {
 	const context = useContext(AuthContext);
@@ -15,7 +16,7 @@ const Login = props => {
 		update(_, { data: { login: userData } }) {
 			context.login(userData);
 
-			props.history.push("/");
+			props.history.push("/rooms");
 		},
 		onError(err) {
 			const { username, password } = err.graphQLErrors[0].extensions.exception;
@@ -65,6 +66,9 @@ const Login = props => {
 				/>
 				<Button positive type="submit">
 					Login
+				</Button>
+				<Button color="facebook" as={Link} to="/register">
+					Sign Up
 				</Button>
 			</Form>
 		</div>
