@@ -13,16 +13,17 @@
 	font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
-/* .form-container {
+.form-container {
 	margin: auto;
 	width: 80%;
-} */
+}
 
-/* .chat-room {
+.chat-room {
 	width: 80%;
 	margin: auto;
- }  */
+}
 
 .chat-form {
+	margin: 10px 10px;
 	display: inline-block;
 }
