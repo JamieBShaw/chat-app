@@ -1,10 +1,12 @@
 const userResolvers = require("./user");
 const messageResolvers = require("./message");
+const roomResolvers = require("./room");
 
 module.exports = {
 	Query: {
 		...userResolvers.Query,
-		...messageResolvers.Query
+		...messageResolvers.Query,
+		...roomResolvers.Query
 	},
 	Mutation: {
 		...messageResolvers.Mutation,
