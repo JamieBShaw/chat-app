@@ -1,6 +1,1 @@
-# chat-app
-
-postgres commands:
-
-su postgres
-psql chat-application
+GraphQL Backend for Chat application
