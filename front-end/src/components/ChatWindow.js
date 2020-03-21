@@ -1,8 +1,10 @@
 import React from "react";
-import { Form, Button } from "semantic-ui-react";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useForm } from "../utils/useForm";
+
+import ChatForm from "./ChatForm";
+import ChatMessage from "./ChatMessage";
 
 const ChatWindow = props => {
 	const initialState = {
@@ -24,24 +26,13 @@ const ChatWindow = props => {
 
 	return (
 		<>
-			<div>window</div>
-			<Form onSubmit={onSubmit} loading={loading}>
-				<Form.Field>
-					<label> Compose Message </label>
-					<input
-						type="text"
-						name="body"
-						value={values.body}
-						onChange={onChange}
-					/>
-					<Button
-						floated="right"
-						type="submit"
-						color={values.body === "" ? "google plus" : "green"}>
-						Send
-					</Button>
-				</Form.Field>
-			</Form>
+			<ChatMessage />
+			<ChatForm
+				onChange={onChange}
+				onSubmit={onSubmit}
+				values={values}
+				loading={loading}
+			/>
 		</>
 	);
 };

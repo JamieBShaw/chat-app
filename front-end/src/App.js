@@ -5,7 +5,7 @@ import { Container } from "semantic-ui-react";
 import { AuthProvider } from "./context/globalContext/auth";
 
 import Login from "./pages/Login";
-import ChatRooms from "./pages/ChatRooms";
+import ChatRoom from "./pages/ChatRoom";
 import Register from "./pages/Register";
 import NavBar from "./components/NavBar";
 
@@ -19,7 +19,7 @@ function App() {
 			<Router>
 				<Container fluid>
 					<NavBar />
-					<Route exact path="/rooms" component={ChatRooms} />
+					<Route exact path="/rooms" component={ChatRoom} />
 					<Route exact path="/login" component={Login} />
 					<Route exact path="/register" component={Register} />
 				</Container>
